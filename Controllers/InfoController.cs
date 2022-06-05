@@ -18,7 +18,11 @@ namespace MotoGp.Controllers
         {
             _context = context;
         }
-
+        // GET: InfoController
+        public ActionResult Index()
+        {
+            return View();
+        }
         public IActionResult ListRaces()
         {
             ViewData["Title"] = "Races";
@@ -46,16 +50,6 @@ namespace MotoGp.Controllers
                 );
             }
 
-                //races
-                //    .GroupBy(r => r.Date.Month)
-                //    .Select( i =>new ListRacesViewModel()
-                //        {
-                //            MonthName = (new DateTime(2022, i.Key, 1)).ToString("MMMM"),
-                //            Races = (List<Race>)races.Where(r => r.Date.Month == i.Key)
-                //        }
-                //    ).ToList();
-
-            //var races = _context.Races.OrderBy(r => r.Date.Month);
             return View(racesPerMonthList);
         }
         public IActionResult ListRiders()
@@ -77,12 +71,22 @@ namespace MotoGp.Controllers
             var races = _context.Races;
             return View(races.ToList());
         }
-
-        // GET: InfoController
-        public ActionResult Index()
+        public IActionResult ShowRace(int id = 0)
         {
-            return View();
+            
+            ViewData["BannerNr"] = 0;
+
+            if (id == 0) 
+            { 
+                return BuildMap(); 
+            }
+
+            var race = _context.Races.Where(r => r.RaceID == id);
+            ViewData["Title"] = "Race - " + race.FirstOrDefault().Name;
+            return View(race.ToList()); 
         }
+
+        
 
         // GET: InfoController/Details/5
         public ActionResult Details(int id)

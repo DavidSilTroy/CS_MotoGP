@@ -9,24 +9,6 @@
 
 <div>
 
-
-
-@*
-    @foreach(Movie item in Model)
-    {   
-        <h3>
-            
-            @(Html.DisplayFor(modelItem => race.Date))
-        </h3>
-        <p>
-            @race.Date
-        <a asp-controller="Info" asp-action="ShowRace" asp-route-id="@race.RaceID" alt="@race.Name">
-            @race.Name
-        </a>
-        </p>
-    }
-*@
-
 @foreach (ListRacesViewModel listInMonth in Model)
 {
     <h3>
