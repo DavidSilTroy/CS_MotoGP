@@ -2,6 +2,7 @@
 {
     public class Rider
     {
+        public int RiderID { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public int TeamID { get; set; }

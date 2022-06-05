@@ -4,6 +4,7 @@ namespace MotoGP.Models
 {
     public class Ticket
     {
+        public int TicketID { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
