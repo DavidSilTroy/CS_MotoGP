@@ -1,0 +1,31 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    //List<Race> races = ViewData["RacesList"];
+
+    var races = (List<Race>)ViewData["RacesList"];
+}
+<p>
+    Here shoul be an awesome map
+    and
+    
+</p>
+
+
+
+<img src="~/images/banners/map.png" alt="RacesMap" usemap="#RacesMap" width="100%" height="auto">
+
+<map name="RacesMap">
+    @foreach(var race in @races)
+    {   
+        <a asp-controller="Info" asp-action="ShowRace" asp-route-id="@race.RaceID" alt="@race.Name">
+            <area shape="circle" coords="@race.X , @race.Y, 100px">
+        </a>
+    }
+</map>
+
+
+<a asp-controller="Info" asp-action="ListRaces" >
+    Back
+</a>

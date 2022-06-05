@@ -1,9 +1,26 @@
-﻿@{
+﻿@*
+    //Normally in this way it is complety specified the route:
     Layout = "~/Views/Shared/_NewLayout.cshtml";
+    //but it is not necessary, because the default folder to look for a file is Shared
+    //so this is enough: Layout = "_NewLayout";
+
+*@
+@{
+    Layout = "_NewLayout";
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome Bro</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+ .centered {
+ position: fixed;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ }
+</style>
+
+<div class = "centered">
+    <a asp-controller="Home" asp-action="Menu" >
+        <img src="~/images/banners/logo.png"/>
+    </a>
 </div>

@@ -22,7 +22,29 @@ namespace MotoGP.Controllers
         {
             return View();
         }
+        public IActionResult Menu()
+        {
+            var MGpRandomNumber = new Random();
+            ViewData["BannerNr"] = MGpRandomNumber.Next(1, 5);
+            return View();
+        }
 
+        public IActionResult ListRaces()
+        {
+            return View();
+        }
+        public IActionResult ListRiders()
+        {
+            return View();
+        }
+        public IActionResult ListTeams()
+        {
+            return View();
+        }
+        public IActionResult OrderTickets()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
