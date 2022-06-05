@@ -4,7 +4,12 @@
 @{
 }
 <p>
-    Thank you for ordering tickets for the race. Your booking is registered on @ViewData["CurrentDateConfirm"]. We will send the tickets as soon as possible.
+    Thank you for ordering tickets for the race. 
+    Your booking is registered on 
+    <strong>
+    @ViewData["CurrentDateConfirm"]. 
+    </strong>
+    We will send the tickets as soon as possible.
 </p>
 
 <a asp-controller="Home" asp-action="Menu" >
