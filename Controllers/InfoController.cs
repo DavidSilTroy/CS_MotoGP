@@ -1,17 +1,62 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MotoGP.Data;
 using MotoGP.Models;
+using MotoGP.Models.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace MotoGp.Controllers
 {
     public class InfoController : Controller
     {
+        private readonly GPContext _context;
+
+        public InfoController(GPContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult ListRaces()
         {
             ViewData["Title"] = "Races";
             ViewData["BannerNr"] = 0;
-            return View();
+
+            
+            var races = _context.Races;
+
+            List<int> monthFromRaces =
+                races
+                    .GroupBy(r => r.Date.Month)
+                    .Select(i => i.Key
+                    ).ToList();
+
+            var racesPerMonthList = new List<ListRacesViewModel>();
+                
+            foreach (var month in monthFromRaces)
+            {
+                racesPerMonthList.Add(
+                    new ListRacesViewModel()
+                    {
+                        MonthName = (new DateTime(2022, month, 1)).ToString("MMMM"),
+                        Races = races.Where(r => r.Date.Month == month).OrderBy(r => r.Date).ToList()
+                    }
+                );
+            }
+
+                //races
+                //    .GroupBy(r => r.Date.Month)
+                //    .Select( i =>new ListRacesViewModel()
+                //        {
+                //            MonthName = (new DateTime(2022, i.Key, 1)).ToString("MMMM"),
+                //            Races = (List<Race>)races.Where(r => r.Date.Month == i.Key)
+                //        }
+                //    ).ToList();
+
+            //var races = _context.Races.OrderBy(r => r.Date.Month);
+            return View(racesPerMonthList);
         }
         public IActionResult ListRiders()
         {
@@ -29,12 +74,8 @@ namespace MotoGp.Controllers
         {
             ViewData["Title"] = "Map";
             ViewData["BannerNr"] = 0;
-            List<Race> races = new List<Race>();
-            races.Add(new Race() { RaceID = 1, X = 517, Y = 19, Name = "Assen" });
-            races.Add(new Race() { RaceID = 2, X = 859, Y = 249, Name = "Losail Circuit" });
-            races.Add(new Race() { RaceID = 3, X = 194, Y = 428, Name = "Autódromo Termas de Río Hondo" });
-            ViewData["RacesList"] = races;
-            return View();
+            var races = _context.Races;
+            return View(races.ToList());
         }
 
         // GET: InfoController
