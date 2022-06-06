@@ -13,6 +13,7 @@ namespace MotoGP.Models.ViewModels
         public List<Race> Races { get; set; }
         [Display(Name = "Country")]
         public int CountryID { get; set; }
+        public int RaceID { get; set; }
 
     }
 }

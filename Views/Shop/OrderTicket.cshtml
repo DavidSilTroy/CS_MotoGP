@@ -40,6 +40,28 @@
         </tr>
         <tr>
             <td>
+                <label asp-for="CountryID"> @Html.DisplayNameFor(model => model.CountryID) </label> 
+            </td>
+            <td>
+                <select asp-for="CountryID" asp-items="Model.Countries">
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Races"> @Html.DisplayNameFor(model => model.Races) </label> 
+            </td>
+            <td>
+                @foreach (var item in Model.Races)
+               {
+                <input type="radio" asp-for="@Model.RaceID" value="@item.RaceID"/> @item.Name
+                <br />
+               }
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
                 <label asp-for="Ticket.Number"> @Html.DisplayNameFor(model => model.Ticket.Number) </label>
             </td>
             <td>
@@ -48,15 +70,6 @@
                 <input type="radio" asp-for="Ticket.Number" value="@i"/> @i
                }
 
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label asp-for="CountryID"> @Html.DisplayNameFor(model => model.CountryID) </label> 
-            </td>
-            <td>
-                <select asp-for="CountryID" asp-items="Model.Countries">
-                </select>
             </td>
         </tr>
         <tr>
