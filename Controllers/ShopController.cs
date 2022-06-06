@@ -1,11 +1,25 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using MotoGP.Data;
+using MotoGP.Models;
+using MotoGP.Models.ViewModels;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MotoGp.Controllers
 {
     public class ShopController : Controller
     {
+        private readonly GPContext _context;
+        public ShopController( GPContext context)
+        {
+            _context = context;
+        }
+
+
+
         // GET: ShopController
         public ActionResult Index()
         {
@@ -15,14 +29,40 @@ namespace MotoGp.Controllers
         {
             ViewData["Title"] = "Order Tickets";
             ViewData["BannerNr"] = 3;
-            return View();
+            var listCountries = new CountriesForTicketsViewModel();
+            listCountries.Countries = new SelectList(_context.Countries.OrderBy(c => c.CountryID),"CountryID" ,"Name");
+            listCountries.Races = _context.Races.OrderBy(r=>r.Name).ToList();
+            return View(listCountries);
         }
-        public IActionResult ConfirmOrder()
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConfirmOrder(
+            [Bind("Name,Email,Address,Number")] Ticket ticket, CountriesForTicketsViewModel countrySelect)
         {
-            string date = DateTime.UtcNow.ToString("dd-MM-yyyy");
+            var date = DateTime.UtcNow;
+            ViewBag.ticketInfo = "Error";
             ViewData["Title"] = "Confirmation";
+            ViewData["CurrentDateConfirm"] = date.ToString("dd-MM-yyyy");
             ViewData["BannerNr"] = 3;
-            ViewData["CurrentDateConfirm"] = date;
+
+            ticket.CountryID = countrySelect.CountryID;
+            ticket.RaceID = countrySelect.RaceID;
+            ticket.OrderDate = date;
+            ticket.Paid = true;
+            if (ModelState.IsValid && ticket.CountryID!=0)
+            {
+
+                _context.Add(ticket);
+                _context.SaveChanges();
+                var theRace = _context.Races.Where(r => r.RaceID == ticket.RaceID).FirstOrDefault();
+                ViewBag.RaceData = $"{theRace.Name} on {theRace.Date}";
+                ViewBag.UserName = $"{ticket.Name}";
+                ViewBag.TicketNumbers = $"{ticket.Number} tickets";
+                ViewBag.ticketInfo = $"done xd";
+                return View();
+            }
+
             return View();
         }
 
@@ -35,6 +75,7 @@ namespace MotoGp.Controllers
         // GET: ShopController/Create
         public ActionResult Create()
         {
+
             return View();
         }
 
