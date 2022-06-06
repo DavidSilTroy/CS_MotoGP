@@ -3,6 +3,9 @@
 *@
 @{
 }
+
+@if (ViewBag.ticketInfo == "Done")
+{
 <p>
     Thank you for ordering tickets for the race. 
     Your booking is registered on 
@@ -10,8 +13,15 @@
     @ViewData["CurrentDateConfirm"]. 
     </strong>
     We will send the tickets as soon as possible.
-</p>
-
+</p> 
 <a asp-controller="Home" asp-action="Menu" >
-    Back
+    Go to Menu
 </a>
+}
+else{
+    <p>
+        Whops! Somthing went wrong.. please try again.
+    </p>  
+    <a href='javascript:history.go(-1)'>Go Back</a>
+}
+

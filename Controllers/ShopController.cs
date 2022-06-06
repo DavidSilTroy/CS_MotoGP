@@ -1,11 +1,22 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MotoGP.Data;
+using MotoGP.Models;
 using System;
+using System.Linq;
 
 namespace MotoGp.Controllers
 {
     public class ShopController : Controller
     {
+        private readonly GPContext _context;
+        public ShopController( GPContext context)
+        {
+            _context = context;
+        }
+
+
+
         // GET: ShopController
         public ActionResult Index()
         {
@@ -15,14 +26,31 @@ namespace MotoGp.Controllers
         {
             ViewData["Title"] = "Order Tickets";
             ViewData["BannerNr"] = 3;
-            return View();
+            //var ticktes = _context.Tickets;
+            return View() ;
         }
-        public IActionResult ConfirmOrder()
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConfirmOrder([Bind("Name,Email,Address")] Ticket ticket)
         {
-            string date = DateTime.UtcNow.ToString("dd-MM-yyyy");
+            var date = DateTime.UtcNow;
+            ViewBag.ticketInfo = "Error";
             ViewData["Title"] = "Confirmation";
+            ViewData["CurrentDateConfirm"] = date.ToString("dd-MM-yyyy");
             ViewData["BannerNr"] = 3;
-            ViewData["CurrentDateConfirm"] = date;
+            ticket.CountryID = 1;
+            ticket.RaceID = 1;
+            ticket.Number = 1;
+            ticket.OrderDate = date;
+            ticket.Paid = true;
+            if (ModelState.IsValid)
+            {
+                _context.Add(ticket);
+                _context.SaveChanges();
+                ViewBag.ticketInfo = "Done";    
+                return View();
+            }
             return View();
         }
 
@@ -35,6 +63,7 @@ namespace MotoGp.Controllers
         // GET: ShopController/Create
         public ActionResult Create()
         {
+
             return View();
         }
 
