@@ -56,7 +56,8 @@ namespace MotoGp.Controllers
         {
             ViewData["Title"] = "Riders";
             ViewData["BannerNr"] = 1;
-            return View();
+            var riders = _context.Riders.OrderBy(r => r.Number);
+            return View(riders.ToList());
         }
         public IActionResult ListTeams()
         {
