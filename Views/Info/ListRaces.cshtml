@@ -1,8 +1,40 @@
-﻿@*
+﻿@using MotoGP.Models.ViewModels
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@model List<MotoGP.Models.ViewModels.ListRacesViewModel>
 @{
+
 }
+
+<div>
+
+@foreach (ListRacesViewModel listInMonth in Model)
+{
+    <h3>
+        @(Html.DisplayFor(modelItem => @listInMonth.MonthName))
+    </h3>
+
+    @foreach (Race item in listInMonth.Races)
+   {
+       <p>
+            @(Html.DisplayFor(modelItem => @item.Date))
+        <a 
+            asp-controller="Info" 
+            asp-action="ShowRace" 
+            asp-route-id="@item.RaceID" 
+            alt="@item.Name">
+             @(Html.DisplayFor(modelItem => @item.Name))
+        </a>
+        </p>
+       
+   }
+
+    
+}
+
+</div>
+
 <p>
     Please fill out following fields:
 </p>
