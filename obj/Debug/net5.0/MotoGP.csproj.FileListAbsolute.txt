@@ -401,3 +401,4 @@ C:\Users\david\source\repos\www\MotoGP\MotoGP\obj\Debug\net5.0\refint\MotoGP.dll
 C:\Users\david\source\repos\www\MotoGP\MotoGP\obj\Debug\net5.0\MotoGP.pdb
 C:\Users\david\source\repos\www\MotoGP\MotoGP\obj\Debug\net5.0\MotoGP.genruntimeconfig.cache
 C:\Users\david\source\repos\www\MotoGP\MotoGP\obj\Debug\net5.0\ref\MotoGP.dll
+C:\Users\david\source\repos\www\MotoGP\MotoGP\obj\Debug\net5.0\Razor\Views\Info\ShowRace.cshtml.g.cs

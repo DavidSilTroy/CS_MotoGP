@@ -1,9 +1,80 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@model List<Rider>
 <p>
     Please fill out following fields:
 </p>
+
+<style>
+    .card-list{
+        display: grid;
+        grid-template-columns: repeat(3, minmax(100px, 293px));
+        justify-content: center;
+        gap: 28px;
+    }
+    .card{
+        padding:5%;
+        background-color:darkgray;
+        cursor: pointer;
+        position: relative;
+        display: block;
+    }
+    .card-img{
+        width: 90%;
+        margin-inline: 5%;
+        vertical-align: top;
+    }
+    .card-title{
+        padding-right:5%;
+        padding-left:5%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 70%;
+        justify-content: center;
+        align-items:center;
+    }
+    .card-title div{
+        margin:0;
+        text-align:right;
+    }
+    .card-body{
+        padding-right:5%;
+        padding-left:5%;
+        font-size:1rem;
+        color:gainsboro;
+    }
+</style>
+
+<div class="card-list" >
+    @foreach (var item in Model)
+   {
+       <div class="card">
+            <img class="card-img" src="~/images/riders/@(item.Number).jpg" />
+            <br>
+            <div class="card-title">
+                <div>
+                    <img src="~/images/flags/@(@item.CountryID).png" />
+                </div>
+                <div>
+                    <h2>
+                        @(Html.DisplayFor(modelItem => @item.Number))
+                    </h2>
+                </div>
+            </div>
+            <p class="card-body">
+                @(Html.DisplayFor(modelItem => @item.FirstName)) 
+                @(Html.DisplayFor(modelItem => @item.LastName))
+            </p>
+       </div>
+       @*<h2>
+        @(Html.DisplayFor(modelItem => @item.Country))
+        </h2>
+        <p>
+            @(Html.DisplayFor(modelItem => @item.Description))
+        </p>*@
+   }
+</div>
 
 <a asp-controller="Home" asp-action="Menu" >
     Back

@@ -1,23 +1,63 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MotoGP.Data;
 using MotoGP.Models;
+using MotoGP.Models.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace MotoGp.Controllers
 {
     public class InfoController : Controller
     {
+        private readonly GPContext _context;
+
+        public InfoController(GPContext context)
+        {
+            _context = context;
+        }
+        // GET: InfoController
+        public ActionResult Index()
+        {
+            return View();
+        }
         public IActionResult ListRaces()
         {
             ViewData["Title"] = "Races";
             ViewData["BannerNr"] = 0;
-            return View();
+
+            
+            var races = _context.Races;
+
+            List<int> monthFromRaces =
+                races
+                    .GroupBy(r => r.Date.Month)
+                    .Select(i => i.Key
+                    ).ToList();
+
+            var racesPerMonthList = new List<ListRacesViewModel>();
+                
+            foreach (var month in monthFromRaces)
+            {
+                racesPerMonthList.Add(
+                    new ListRacesViewModel()
+                    {
+                        MonthName = (new DateTime(2022, month, 1)).ToString("MMMM"),
+                        Races = races.Where(r => r.Date.Month == month).OrderBy(r => r.Date).ToList()
+                    }
+                );
+            }
+
+            return View(racesPerMonthList);
         }
         public IActionResult ListRiders()
         {
             ViewData["Title"] = "Riders";
             ViewData["BannerNr"] = 1;
-            return View();
+            var riders = _context.Riders.OrderBy(r => r.Number);
+            return View(riders.ToList());
         }
         public IActionResult ListTeams()
         {
@@ -29,19 +69,25 @@ namespace MotoGp.Controllers
         {
             ViewData["Title"] = "Map";
             ViewData["BannerNr"] = 0;
-            List<Race> races = new List<Race>();
-            races.Add(new Race() { RaceID = 1, X = 517, Y = 19, Name = "Assen" });
-            races.Add(new Race() { RaceID = 2, X = 859, Y = 249, Name = "Losail Circuit" });
-            races.Add(new Race() { RaceID = 3, X = 194, Y = 428, Name = "Autódromo Termas de Río Hondo" });
-            ViewData["RacesList"] = races;
-            return View();
+            var races = _context.Races;
+            return View(races.ToList());
+        }
+        public IActionResult ShowRace(int id = 0)
+        {
+            
+            ViewData["BannerNr"] = 0;
+
+            if (id == 0) 
+            { 
+                return BuildMap(); 
+            }
+
+            var race = _context.Races.Where(r => r.RaceID == id);
+            ViewData["Title"] = "Race - " + race.FirstOrDefault().Name;
+            return View(race.ToList()); 
         }
 
-        // GET: InfoController
-        public ActionResult Index()
-        {
-            return View();
-        }
+        
 
         // GET: InfoController/Details/5
         public ActionResult Details(int id)

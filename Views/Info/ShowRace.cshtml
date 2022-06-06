@@ -1,0 +1,25 @@
+﻿
+@model List<Race>
+@{
+}
+
+
+<div>
+
+@foreach (var item in Model)
+{
+    <h2>
+        @(Html.DisplayFor(modelItem => @item.Date)) -
+        @(Html.DisplayFor(modelItem => @item.Country))
+    </h2>
+    <img />
+    <img src="~/images/races/@(item.RaceID).jpg" />
+    <p>
+        @(Html.DisplayFor(modelItem => @item.Description))
+    </p>
+}
+</div>
+
+<p>
+    <a href="javascript:void(0);" onclick="history.go(-1);">Back</a>
+</p>
