@@ -39,6 +39,17 @@
         </tr>
         <tr>
             <td>
+                <label asp-for="Number"> @Html.DisplayNameFor(model => model.Number) </label>
+            </td>
+            <td>
+                @for (var i = 1; i <= 6; i++)
+               {
+                <input type="radio" asp-for="Number" value="@i"/> @i
+               }
+            </td>
+        </tr>
+        <tr>
+            <td>
 
             </td>
             <td>

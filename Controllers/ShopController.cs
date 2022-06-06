@@ -32,7 +32,7 @@ namespace MotoGp.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ConfirmOrder([Bind("Name,Email,Address")] Ticket ticket)
+        public IActionResult ConfirmOrder([Bind("Name,Email,Address,Number")] Ticket ticket)
         {
             var date = DateTime.UtcNow;
             ViewBag.ticketInfo = "Error";
@@ -41,7 +41,6 @@ namespace MotoGp.Controllers
             ViewData["BannerNr"] = 3;
             ticket.CountryID = 1;
             ticket.RaceID = 1;
-            ticket.Number = 1;
             ticket.OrderDate = date;
             ticket.Paid = true;
             if (ModelState.IsValid)
